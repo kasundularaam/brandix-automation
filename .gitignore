@@ -89,4 +89,5 @@ ipython_config.py
 *.sublime-workspace
 *.sublime-project
 
-# Add other files and directories you want to ignore below
+# Excel lock files
+~$*.xls*
