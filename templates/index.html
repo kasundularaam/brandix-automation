@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productions Data</title>
+    <script>
+      function fetchData() {
+        fetch("/data")
+          .then((response) => response.json())
+          .then((data) => {
+            // Update the table
+            const tableBody = document.getElementById("data-table-body");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            data.data.forEach((row) => {
+              const tr = document.createElement("tr");
+              [
+                "serialNo",
+                "operator",
+                "power",
+                "productsPerHr",
+                "location",
+              ].forEach((key) => {
+                const td = document.createElement("td");
+                td.textContent = row[key] || "";
+                tr.appendChild(td);
+              });
+              tableBody.appendChild(tr);
+            });
+
+            // Update the last updated time
+            document.getElementById("last-updated").textContent =
+              "Last Updated: " + data.last_updated;
+          })
+          .catch((error) => console.error("Error fetching data:", error));
+      }
+
+      // Fetch data every 10 seconds
+      setInterval(fetchData, 300);
+
+      // Fetch data immediately on page load
+      window.onload = fetchData;
+    </script>
+  </head>
+  <body>
+    <h1>Productions Data</h1>
+    <p id="last-updated">Last Updated:</p>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Serial No</th>
+          <th>Operator</th>
+          <th>Power</th>
+          <th>Products Per Hour</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody id="data-table-body">
+        <!-- Data rows will be inserted here by JavaScript -->
+      </tbody>
+    </table>
+  </body>
+</html>
